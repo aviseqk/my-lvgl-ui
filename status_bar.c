@@ -75,7 +75,7 @@ void init_status_bar(status_bar_t *ui, lv_obj_t *parent)
 
     print_data("status bar", bar);
     print_data("gps", gps);
-    print_data("bluletooth", bluetooth);
+    print_data("bluetooth", bluetooth);
     print_data("battery", battery);
     print_data("location", label1);
     print_data("time", label2);

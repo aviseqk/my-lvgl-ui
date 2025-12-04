@@ -2,6 +2,7 @@
 #define HOME_SCREEN_H
 
 #include "lvgl.h"
+#include <stdio.h>
 
 typedef struct screen_home_t
 {

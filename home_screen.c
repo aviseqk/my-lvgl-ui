@@ -1,11 +1,39 @@
 /* This is for the Home Screen */
 #include "home_screen.h"
 #include "status_bar.h"
+#include "ride_screen.h"
 
 // get the icons from assets/ folder (Icons downloaded in 36px,36px, in png format and then converted using lvgl image converter and added as source files)
 extern const lv_image_dsc_t bicycle_bold;
 extern const lv_image_dsc_t chart_bar_bold;
 extern const lv_image_dsc_t gear_bold;
+
+lv_obj_t *home_buttons[3];
+
+static void ride_btn_click_event_cb(lv_event_t *e)
+{
+    printf("Ride Button Clicked\n");
+    ride_screen_t *rs;
+    init_ride_screen(rs);
+    lv_screen_load_anim(rs->root, LV_SCREEN_LOAD_ANIM_MOVE_LEFT, 100, 100, false);
+}
+
+static void stats_btn_click_event_cb(lv_event_t *e)
+{
+    printf("Stats Button Clicked\n");
+}
+
+static void config_btn_click_event_cb(lv_event_t *e)
+{
+    printf("Config Button Clicked\n");
+}
+
+static void register_button_actions(lv_obj_t *buttons[3])
+{
+    lv_obj_add_event_cb(buttons[0], ride_btn_click_event_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(buttons[1], stats_btn_click_event_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(buttons[2], config_btn_click_event_cb, LV_EVENT_CLICKED, NULL);
+}
 
 void init_home_screen(screen_home_t *ui)
 {
@@ -18,6 +46,7 @@ void init_home_screen(screen_home_t *ui)
     ui->status_bar = s_bar.root;
 
     create_home_buttons_w_text(ui);
+    register_button_actions(home_buttons);
 
     /* styling the top status bar */
     // NOTE: If a style is not to be changed during running, it's better to create them as const variables, to save RAM
@@ -96,7 +125,6 @@ void create_home_buttons_w_text(screen_home_t *ui)
     lv_obj_set_style_pad_bottom(btn_container, 0, 0);
 
     lv_obj_set_size(btn_container, 240, 120);
-    // lv_obj_set_style_radius(btn_container, LV_RADIUS_CIRCLE, 0);
 
     lv_obj_set_flex_flow(btn_container, LV_FLEX_FLOW_ROW);
     // lv_obj_set_style_pad_row(btn_container, 0, 0);
@@ -150,5 +178,7 @@ void create_home_buttons_w_text(screen_home_t *ui)
         lv_obj_set_style_text_color(label, lv_color_white(), 0);
         lv_obj_set_width(label, 60); // same width as the circle button
         lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, 0);
+
+        home_buttons[i] = btn;
     }
 }
